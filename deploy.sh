@@ -1,9 +1,17 @@
+if [ -z "$deployed_environment" ]
+    then 
+        echo "\$deployed_environment environment variable is unset!"
+        echo "Aborting deployment."
+        exit
+fi
+
 product_name=$focusmark_productname
+cd src
 
 # Deploy certificates
 certificates_template='certificates.yaml'
 certificates_stackname=focusmark-"$deployed_environment"-cf-certificates
-echo Deploying the $certificates_stackname stack.
+echo Deploying the $certificates_stackname stack into $deployed_environment
 
 aws cloudformation deploy \
     --template-file $certificates_template \
@@ -16,7 +24,9 @@ aws cloudformation deploy \
 # Deploy the API Gateway Domain
 apidomain_template='apigw-domain.yaml'
 apidomain_stackname=focusmark-"$deployed_environment"-cf-apigwdomain
-echo Deploying the $apidomain_stackname stack.
+
+echo Deploying the $apidomain_stackname stack into $deployed_environment
+
 aws cloudformation deploy \
     --template-file $apidomain_template \
     --stack-name $apidomain_stackname \
@@ -29,7 +39,7 @@ aws cloudformation deploy \
 dnsrecords_template='dns-records.yaml'
 dnsrecords_stackname=focusmark-"$deployed_environment"-cf-dnsrecords
 
-echo Deploying the $dnsrecords_stackname stack.
+echo Deploying the $dnsrecords_stackname stack into $deployed_environment
 aws cloudformation deploy \
     --template-file $dnsrecords_template \
     --stack-name $dnsrecords_stackname \
