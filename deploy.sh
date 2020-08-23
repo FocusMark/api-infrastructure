@@ -10,7 +10,7 @@ cd src
 
 # Deploy certificates
 certificates_template='certificates.yaml'
-certificates_stackname=focusmark-"$deployed_environment"-cf-certificates
+certificates_stackname=focusmark-"$deployed_environment"-cf-api-certificates
 echo Deploying the $certificates_stackname stack into $deployed_environment
 
 aws cloudformation deploy \
@@ -23,7 +23,7 @@ aws cloudformation deploy \
 
 # Deploy the API Gateway Domain
 apidomain_template='apigw-domain.yaml'
-apidomain_stackname=focusmark-"$deployed_environment"-cf-apigwdomain
+apidomain_stackname=focusmark-"$deployed_environment"-cf-api-domain
 
 echo Deploying the $apidomain_stackname stack into $deployed_environment
 
@@ -37,7 +37,7 @@ aws cloudformation deploy \
 
 # Deploy the Route 53 Hosted Zones
 dnsrecords_template='dns-records.yaml'
-dnsrecords_stackname=focusmark-"$deployed_environment"-cf-dnsrecords
+dnsrecords_stackname=focusmark-"$deployed_environment"-cf-api-dnsrecords
 
 echo Deploying the $dnsrecords_stackname stack into $deployed_environment
 aws cloudformation deploy \
