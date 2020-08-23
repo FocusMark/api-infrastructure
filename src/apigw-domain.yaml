@@ -1,0 +1,52 @@
+Description: Exposes an API Gateway domain bound to certificates within the account and attachable from individual API Gateways to route under the same trusted domain name.
+
+Parameters:
+  TargetEnvironment:
+    Description: 'Examples are local, dev, test, prod, etc'
+    Type: 'String'
+    
+  ProductName:
+    Description: 'Represents the name of the product you want to call the deployment'
+    Type: 'String'
+    
+Resources:
+  
+  ApiDomain:
+    Type: AWS::ApiGateway::DomainName
+    Properties:
+      RegionalCertificateArn: {'Fn::ImportValue': !Sub '${ProductName}-${TargetEnvironment}-certificate-api'}
+      DomainName: !Sub '${TargetEnvironment}-api.${ProductName}.app'
+      EndpointConfiguration:
+        Types:
+          - REGIONAL
+      SecurityPolicy: TLS_1_2
+      Tags:
+        - Key: environment
+          Value: !Ref TargetEnvironment
+        - Key: orchestration
+          Value: cloud-formation
+        - Key: service
+          Value: api
+        - Key: service-type
+          Value: aws-managed
+        - Key: product
+          Value: !Ref ProductName
+          
+Outputs:
+  ApiCustomDomainName:
+    Description: 'Custom domain name for the API'
+    Value: !Ref ApiDomain
+    Export:
+      Name: !Sub '${ProductName}-${TargetEnvironment}-apigw-customdomain'
+      
+  ApiCustomDomainRegionalDomainName:
+    Description: 'Regional domain name for the API'
+    Value: !GetAtt ApiDomain.RegionalDomainName
+    Export:
+      Name: !Sub '${ProductName}-${TargetEnvironment}-apigw-regionaldomain'
+      
+  ApiCustomDomainRegionalDomainHostedZone:
+    Description: 'Regional domain hosted zone for the API'
+    Value: !GetAtt ApiDomain.RegionalHostedZoneId
+    Export:
+      Name: !Sub '${ProductName}-${TargetEnvironment}-apigw-regionalhostedzoneid'
