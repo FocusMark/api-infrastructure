@@ -1,0 +1,19 @@
+Description: Binds the Project API Gateway endpoints to the API Gateway Custom Domain. The Custom Domain is behind the api subdomain on the hosted zone.
+
+Parameters:
+  TargetEnvironment:
+    Description: 'Examples can be dev, test or prod'
+    Type: 'String'
+    
+  ProductName:
+    Description: 'Represents the name of the product you want to call the deployment'
+    Type: 'String'
+    
+Resources:
+  ProjectApiDomainMapping:
+    Type: AWS::ApiGateway::BasePathMapping
+    Properties: 
+      BasePath: project
+      DomainName: {'Fn::ImportValue': !Sub '${ProductName}-${TargetEnvironment}-apigw-customdomain'}
+      RestApiId: {'Fn::ImportValue': !Sub '${ProductName}-${TargetEnvironment}-apigateway-project'}
+      Stage: !Ref TargetEnvironment

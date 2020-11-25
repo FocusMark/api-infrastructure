@@ -1,5 +1,4 @@
 product_name=$focusmark_productname
-cd src
 
 # Deploy certificates
 certificates_template='auth-certificates.yaml'

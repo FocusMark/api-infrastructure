@@ -42,8 +42,11 @@ The `deployed_environment` and `focusmark_productname` environment variables wil
 The infrastructure in this repository consists of the following:
 
 - API Gateway Custom Domain for APIs
-- Certificate issued from AWS ACM that is bound to the API Gateway Custom Domain
-- Route 53 A record created to build the api.mydomain.com subdomain.
+- API Gateway mappings to the Custom Domain from the Project API Gateway
+- API Gateway mappings to the Custom Domain from the Task API Gateway
+- Route 53 A record created to build the api.mydomain.com subdomain pointing to the API Gateway Custom Domain (bullet point #1).
+- Certificate issued from AWS ACM that is bound to the API Gateway Custom Domain for api.mydomain.com
+- Certificate issued from AWS ACM that is used for auth.mydomain.com
 
 ![Resources](/docs/api-infrastructure-resources.jpeg)
 
