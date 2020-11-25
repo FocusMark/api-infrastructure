@@ -13,7 +13,7 @@ Resources:
   ProjectApiDomainMapping:
     Type: AWS::ApiGateway::BasePathMapping
     Properties: 
-      BasePath: project
+      BasePath: task
       DomainName: {'Fn::ImportValue': !Sub '${ProductName}-${TargetEnvironment}-apigw-customdomain'}
       RestApiId: {'Fn::ImportValue': !Sub '${ProductName}-${TargetEnvironment}-apigateway-task'}
       Stage: !Ref TargetEnvironment
